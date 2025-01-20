@@ -6,7 +6,7 @@ from fastapi import FastAPI
 
 
 def register_exception_handler(app: FastAPI):
-    pass
+    app.add_exception_handler(ObjectDoesNotExistException, object_does_not_exist_exception_handler)
 
 
 class ApplicationBaseException(Exception):
