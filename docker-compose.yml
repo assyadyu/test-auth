@@ -1,0 +1,43 @@
+version: "3.10"
+
+
+x-common-variables: &common-variables
+  POSTGRES_USER: db_user
+  POSTGRES_PASSWORD: db_pass
+  POSTGRES_DB: users_db
+  POSTGRES_PORT: 5432
+
+services:
+
+  auth-db-service:
+    image: postgres:15-alpine
+    volumes:
+      - "postgres_data:/var/lib/postgresql/data/"
+    ports:
+      - "5433:5432"
+    expose:
+      - 5433
+    environment: *common-variables
+    networks:
+      - test-orders_backend-network
+
+  auth-service:
+    build: .
+    volumes:
+      - ./src:/app/src
+    environment:
+      <<: *common-variables
+      POSTGRES_HOST: auth-db-service
+    ports:
+      - "3000:8000"
+    networks:
+      - test-orders_backend-network
+    depends_on:
+      - auth-db-service
+    command: bash -c "alembic upgrade head && uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload"
+networks:
+  test-orders_backend-network:
+    external: true
+
+volumes:
+  postgres_data:
