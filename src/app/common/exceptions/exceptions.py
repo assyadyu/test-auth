@@ -29,5 +29,5 @@ class EmailAlreadyRegisteredException(ApplicationBaseException):
 
 class InvalidTokenException(ApplicationBaseException):
     def __init__(self):
-        msg = f"Token is not valid"
+        msg = "Token is not valid"
         super().__init__(msg)

@@ -1,30 +1,50 @@
-# Auth Service for user authentication
+# Auth Service for basic user authentication
+
+Generates and validates access tokens if provided credentials are correct
 
 ## Software Installation
 Install following software:
 ```
 Python 3
 PostgreSQL 
-Redis
 ```
 
 ## App Installation
-Prepare local POSTGRES database
+Prepare local POSTGRES database users_db
 ```bash
 #
 sudo -u postgres psql -c "CREATE DATABASE users_db;"
 sudo -u postgres psql -c "CREATE USER db_user WITH PASSWORD 'db_pass';"
 sudo -u postgres psql -c "GRANT ALL PRIVILEGES ON DATABASE users_db to db_user;"
+```
+Set environment variables (see app/common/settings.py)
 
-#install libraries
+and run
+```bash
+# install libraries
 pip install -r constraints.txt
 
-#run migrations
+# run migrations
 alembic upgrade head
+
+# run server -- make sure auth server is running
+uvicorn app.main:app --port 3000 --reload 
+
+# Swagger UI
+http://127.0.0.1:3000/docs#/
+
 ```
 
-For testing purposes create 2 records in Users table
+Option 2. Using Docker
+
+Note 1: First build container from test-orders repo, it contains shared network 
+```bash
+docker compose up --build
+# run with testing profile that executes tests
+docker compose --profile testing up --build
+
+# Swagger UI
+http://0.0.0.0:3000/docs#/
 ```
-INSERT INTO users VALUES('admin', 'hash', null, 'admin@gmail.com', 'ADMIN', '970f7694-bac9-4334-aa1a-17b38158db57');
-INSERT INTO users VALUES('user1', 'hash1', null, 'user1@gmail.com', 'USER', '10333888-e47c-4e2b-b996-b99a956e5ecd');
-```
+
+Note 2: No tests since there is no business logic and operations are trivial

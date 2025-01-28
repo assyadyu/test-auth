@@ -7,7 +7,7 @@ from sqlalchemy.ext.asyncio import (
     async_sessionmaker,
 )
 
-from app.common import logger, settings
+from app.common import logger
 
 
 def async_engine(url: str) -> AsyncEngine:
@@ -18,7 +18,6 @@ def async_engine(url: str) -> AsyncEngine:
         isolation_level="REPEATABLE READ",
         future=True,
         connect_args={"timeout": 60},
-        # poolclass=NullPool,  # NullPool for sqlalchemy repo tests
     )
 
 

@@ -18,11 +18,6 @@ class UserRepository(IUserRepository, SQLAlchemyBaseRepository):
     _MODEL: MODEL = UserModel
 
     async def validate_new_user(self, data: UserSignupSchema) -> None:
-        """
-        Checks if username and email are valid, i.e. not used already
-        :param data: UserSignupSchema
-        :return: None
-        """
         stmt = sa.select(self._MODEL).filter_by(username=data.username)
         resp = await self.session.execute(stmt)
         if resp.scalar():
@@ -55,5 +50,4 @@ class UserRepository(IUserRepository, SQLAlchemyBaseRepository):
         res = resp.scalar()
         if res:
             return res
-        else:
-            raise ObjectDoesNotExistException(model=self._MODEL, object_id=username)
+        raise ObjectDoesNotExistException(model=self._MODEL, object_id=username)
