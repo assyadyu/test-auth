@@ -23,6 +23,7 @@ async def signup(
 ):
     return await service.create_user(request_data)
 
+
 @user_router.post("/signin", response_model=TokenSchema)
 async def signin(
         request_data: UserSigninSchema,
