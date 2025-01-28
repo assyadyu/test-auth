@@ -1,6 +1,3 @@
-#ARG PYTHON_VERSION
-
-#FROM python:$PYTHON_VERSION AS base
 FROM python:3.12-slim AS base
 
 ENV LANG=C.UTF-8
@@ -28,12 +25,10 @@ RUN python3 -m venv $VIRTUALENV
 ENV PATH=$VIRTUALENV/bin:$PATH
 
 COPY constraints.txt pytest.ini ./
-COPY src/tests/ $ROOT/tests/
 COPY src/app/ $ROOT/app/
 
 RUN pip install --no-cache-dir --upgrade pip \
     && pip install --no-cache-dir -r constraints.txt
-#    && pytest $ROOT/tests/unit/ -s -vv -W ignore::DeprecationWarning
 
 FROM python:3.12-slim
 ENV ROOT=/app
