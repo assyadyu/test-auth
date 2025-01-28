@@ -40,8 +40,6 @@ Option 2. Using Docker
 Note 1: First build container from test-orders repo, it contains shared network 
 ```bash
 docker compose up --build
-# run with testing profile that executes tests
-docker compose --profile testing up --build
 
 # Swagger UI
 http://0.0.0.0:3000/docs#/
