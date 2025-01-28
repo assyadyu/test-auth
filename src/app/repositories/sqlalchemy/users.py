@@ -50,5 +50,4 @@ class UserRepository(IUserRepository, SQLAlchemyBaseRepository):
         res = resp.scalar()
         if res:
             return res
-        else:
-            raise ObjectDoesNotExistException(model=self._MODEL, object_id=username)
+        raise ObjectDoesNotExistException(model=self._MODEL, object_id=username)

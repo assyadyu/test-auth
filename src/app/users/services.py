@@ -144,8 +144,7 @@ class UserService(IUserService):
         db_user = await self.repo.get_by_username(data.username)
         if db_user and await self.validate_password(data.password, db_user.hashed_password):
             return await self.generate_token(db_user)
-        else:
-            raise ObjectDoesNotExistException(self.repo._MODEL, object_id=data.username)
+        raise ObjectDoesNotExistException(self.repo._MODEL, object_id=data.username)
 
     async def validate_token(self, data: TokenSchema) -> TokenPayload:
         return await self.decode_token(data.access_token)
